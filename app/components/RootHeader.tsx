@@ -11,7 +11,7 @@ const RootHeader: React.FC = () => {
             <NavLink to={`/`}>Home</NavLink>
           </li>
           <li>
-            <NavLink to={`/`}>Plans</NavLink>
+            <NavLink to={`/plans`}>Plans</NavLink>
           </li>
         </ul>
       </nav>
