@@ -19,7 +19,7 @@ const RootHeader: React.FC = () => {
       <nav id="cta-nav">
         <ul>
           <li>
-            <Link to={`/`} className="cta">
+            <Link to={`/auth`} className="cta">
               Login
             </Link>
           </li>
