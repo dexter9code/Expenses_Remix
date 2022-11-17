@@ -1,6 +1,12 @@
+
+import type { ExpensesProps } from './../utils/allInterface';
 import ExpenseListItem from './ExpenseListItem';
 
-const ExpensesList:React.FC=({ expenses })=> {
+interface Props{
+  expenses:ExpensesProps[]
+}
+
+const ExpensesList:React.FC<Props>=({ expenses })=> {
   return (
     <ol id="expenses-list">
       {expenses.map((expense) => (
