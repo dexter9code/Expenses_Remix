@@ -1,14 +1,13 @@
-import { Link, Outlet } from "@remix-run/react"
+import type { LoaderFunction } from "@remix-run/node";
+import { Link, Outlet, useLoaderData } from "@remix-run/react"
 import { FaPlus, FaDownload } from "react-icons/fa";
 import ExpensesList from "~/components/ExpensesList";
-import type { ExpensesProps } from './../../utils/allInterface';
+import { getExpenses } from "~/utils/expenses.server";
 
-const EXPENSES_LIST:ExpensesProps[]=[
-    {id:'e1',title:'React Course',amount:45,createdAt:new Date(1668667656147),isEdit:false,date:new Date(1668667656147)},
-    {id:'e1',title:'React Course',amount:45,createdAt:new Date(1668667656147),isEdit:false,date:new Date(1668667656147)},
-]
+
 
 const Expenses:React.FC=()=>{
+    const expenses= useLoaderData()
     return(
         <>
         <Outlet/>
@@ -23,7 +22,7 @@ const Expenses:React.FC=()=>{
                 <span>Download Raw Data</span>
             </a>
             </section>
-            <ExpensesList expenses={EXPENSES_LIST}/>
+            <ExpensesList expenses={expenses}/>
         </main>
 
         </>
@@ -31,3 +30,8 @@ const Expenses:React.FC=()=>{
 }
 
 export default Expenses
+
+export const loader:LoaderFunction=async()=>{
+    const expenses=await getExpenses()
+    return expenses
+}

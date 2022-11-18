@@ -12,3 +12,7 @@ export interface ExpenseData {
     amount:string
     date:string
 }
+
+export type myFunction= {
+    oneFun:()=>void
+}

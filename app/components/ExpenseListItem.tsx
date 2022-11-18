@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react"
+import { Form, Link, useFetcher } from "@remix-run/react"
 
 interface Props{
     id:string
@@ -7,6 +7,24 @@ interface Props{
 }
 
 const ExpenseListItem:React.FC<Props>=({id,title,amount})=>{
+    const fetcher=useFetcher()
+
+    function deleteExpenseHandler() {
+      const isConfrim =confirm(`Are you sure?`)
+      if(!isConfrim)return
+
+      fetcher.submit(null,{
+        method:'delete',
+        action:`/expenses/${id}`
+      })
+    }
+
+    if(fetcher.state !== 'idle'){
+      return <article className="expense-item locked">
+        <p>Deleting...</p>
+      </article>
+    }
+
     return(
         <article className="expense-item">
       <div>
@@ -14,7 +32,7 @@ const ExpenseListItem:React.FC<Props>=({id,title,amount})=>{
         <p className="expense-amount">${amount.toFixed(2)}</p>
       </div>
       <menu className="expense-actions">
-        <button >Delete</button>
+        <button onClick={deleteExpenseHandler} >Delete</button>
         {/* <Form method='delete' action={`/expenses/${id}`}>
           <button formMethod='delete'>Delete</button>
         </Form> */}

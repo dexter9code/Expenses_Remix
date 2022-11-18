@@ -60,6 +60,7 @@
   
   .expense-title {
     margin: 0;
+    text-transform: capitalize;
   }
   
   .expense-amount {

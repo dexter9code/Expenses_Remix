@@ -1,9 +1,24 @@
-import { Form, Link } from "@remix-run/react";
+import { Form, Link, useMatches, useParams, useTransition } from "@remix-run/react";
 
 const ExpensesForm: React.FC = () => {
+  const matches= useMatches()
+  const params=useParams()
+  const transition=useTransition()
+
+  const expenses=matches.find(match=>match.id === 'routes/__exp/expenses')?.data
+  const currentExpense=expenses!.find((exp: { id: string | undefined; })=>exp.id===params.id)
+  
+  const defaultValues=currentExpense ?{
+    title:currentExpense.title,
+    amount:currentExpense.amount,
+    date:currentExpense.date
+  }:{title:'',amount:'',date:''}
+
+  const isSubmitting=transition.state !== 'idle'
+
   const today = new Date().toISOString().slice(0, 10); // yields something like 2023-09-10
   return (
-    <Form method="post" className="form" id="expense-form">
+    <Form method={currentExpense?'patch':'post'} className="form" id="expense-form">
       <p>
         <label htmlFor="title">Expense Title</label>
         <input
@@ -12,7 +27,7 @@ const ExpensesForm: React.FC = () => {
           name="title"
           required
           maxLength={30}
-          //   defaultValue={defaultValues.title}
+          defaultValue={defaultValues.title}
         />
       </p>
 
@@ -26,7 +41,7 @@ const ExpensesForm: React.FC = () => {
             min="0"
             step="0.01"
             required
-            // defaultValue={defaultValues.amount}
+            defaultValue={defaultValues.amount}
           />
         </p>
         <p>
@@ -37,9 +52,9 @@ const ExpensesForm: React.FC = () => {
             name="date"
             max={today}
             required
-            // defaultValue={
-            //   defaultValues.date ? defaultValues.date.slice(0, 10) : ""
-            // }
+            defaultValue={
+              defaultValues.date ? defaultValues.date.slice(0, 10) : ""
+            }
           />
         </p>
       </div>
@@ -51,7 +66,7 @@ const ExpensesForm: React.FC = () => {
         </ul>
       )} */}
       <div className="form-actions">
-        <button>Save</button>
+        <button disabled={isSubmitting}>{isSubmitting?`Saving`:`Save`}</button>
         <Link to="/expenses">Cancel</Link>
       </div>
     </Form>
